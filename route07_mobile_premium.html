@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Route 07 Seat Plan</title>
+<style>
+:root{
+  --navy:#061a4a;--blue:#0c2f74;--bg:#e8eef6;--line:#cdd8e8;
+  --yellow:#ffd65b;--green:#9fcb83;--pink:#f3a4c6;--black:#202020;--muted:#64748b;
+  --card-shadow:0 8px 28px rgba(6,26,74,.10);
+  --seat-shadow:0 4px 12px rgba(0,0,0,.28),inset 0 0 0 2px rgba(255,255,255,.55);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:#0b1533;overflow-x:hidden}
+.wrap{max-width:450px;margin:0 auto;background:#fff;min-height:100vh;overflow-x:hidden}
+
+/* Header */
+.header{padding:16px 16px 12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff 0%,#f6f9fd 100%)}
+.logoRow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;line-height:.95;color:#ef1c25;font-size:24px}
+.logo small{display:block;color:#18a84b;font-size:20px;margin-top:3px}
+.sq{width:44px;height:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;border-radius:50%;padding:4px;background:linear-gradient(145deg,#f0f4f8,#fff);box-shadow:0 4px 14px rgba(6,26,74,.12)}
+.sq i{background:#24b654;border-radius:2px}
+.tba{font-size:11px;text-align:right;font-weight:800;color:var(--navy);line-height:1.4;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+h1{margin:14px 0 0;text-align:center;color:var(--navy);font-size:36px;letter-spacing:1.5px;line-height:.9}
+h2{margin:6px 0 0;text-align:center;color:var(--navy);font-size:16px;font-weight:700;opacity:.88}
+
+/* Meta cards */
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px}
+.meta .box{border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:linear-gradient(180deg,#fbfdff,#f4f8fc);font-size:12px;font-weight:700;box-shadow:var(--card-shadow)}
+.meta b{display:block;color:var(--navy);font-size:13px;margin-bottom:4px}
+
+/* Route flow */
+.route{margin:0 16px 14px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--card-shadow)}
+.title{background:linear-gradient(135deg,#061a4a,#0b327a);color:#fff;text-align:center;font-weight:900;padding:10px;font-size:13px;letter-spacing:.3px}
+.routeGrid{display:flex;overflow-x:auto;gap:8px;padding:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.routeGrid::-webkit-scrollbar{display:none}
+.stop{flex:0 0 auto;min-width:88px;text-align:center;font-size:10px;font-weight:800;color:#102044;background:linear-gradient(180deg,#f8fbff,#f0f5fb);border:1px solid #e4ebf5;border-radius:12px;padding:9px 7px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.stop span{display:block;margin-top:5px;color:#0b2f78;text-decoration:underline;font-size:11px}
+
+/* Bus card */
+.busCard{margin:0 16px 14px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff,#f6f9fd);padding:14px 12px 16px;box-shadow:var(--card-shadow)}
+.busTitle{text-align:center;font-size:12px;font-weight:800;color:var(--muted);margin:0 0 10px;letter-spacing:.2px}
+
+/* Responsive bus viewport */
+.busViewport{width:100%;overflow:hidden;display:flex;justify-content:center}
+.busScaler{width:360px;transform-origin:top center;margin:0 auto}
+.bus{
+  position:relative;width:360px;height:720px;
+  border:5px solid #151515;border-radius:50px 50px 32px 32px;
+  background:
+    radial-gradient(circle at 50% 5%,rgba(255,255,255,.92),transparent 18%),
+    linear-gradient(90deg,#f4f6f8 0 28%,#d0d5dc 28% 33%,#fbfcfe 33% 100%);
+  overflow:hidden;
+  box-shadow:
+    inset 0 0 0 4px #5d6269,
+    inset 0 0 32px rgba(0,0,0,.16),
+    0 16px 36px rgba(6,26,74,.18);
+}
+.bus:before{
+  content:"";position:absolute;left:17px;right:17px;top:10px;height:16px;
+  border-radius:20px;background:linear-gradient(90deg,#0d0d0d,#555,#0d0d0d);
+  box-shadow:0 2px 5px rgba(0,0,0,.3);
+}
+.bus:after{
+  content:"";position:absolute;left:20px;right:20px;bottom:8px;height:9px;
+  border-radius:20px;background:linear-gradient(90deg,#0d0d0d,#555,#0d0d0d);
+}
+.windowL,.windowR{position:absolute;top:42px;bottom:42px;width:10px;border-radius:12px;background:linear-gradient(#222,#777,#222);opacity:.75}
+.windowL{left:8px}.windowR{right:8px}
+.dash{position:absolute;right:34px;top:28px;width:122px;height:38px;background:linear-gradient(#1a1a1a,#3a3a3a);border-radius:8px;box-shadow:inset 0 0 0 2px #000,0 2px 6px rgba(0,0,0,.4)}
+.driver{position:absolute;right:46px;top:70px;width:68px;height:76px;background:linear-gradient(#383838,#121212);border-radius:20px;color:#fff;text-align:center;font-weight:900;font-size:10px;padding-top:30px;box-shadow:0 4px 12px rgba(0,0,0,.45)}
+.wheel{position:absolute;right:22px;top:58px;width:35px;height:35px;border:6px solid #111;border-radius:50%;background:#333;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.aisle{position:absolute;left:132px;top:176px;width:45px;height:470px;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.2));border-left:1px solid rgba(0,0,0,.06);border-right:1px solid rgba(0,0,0,.06)}
+.door{position:absolute;left:-4px;top:232px;width:93px;height:88px;border:2px dashed #ef2b2b;background:rgba(255,255,255,.72);display:flex;align-items:center;justify-content:center;text-align:center;color:#ef2b2b;font-weight:900;font-size:10px;line-height:1.1;border-radius:4px}
+.handle{position:absolute;left:5px;width:34px;height:7px;background:#999;border:1px solid #333;border-radius:5px}.h1{top:242px}.h2{top:301px}
+.seat,.baby{position:absolute;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:var(--seat-shadow);border:2px solid rgba(0,0,0,.45);font-weight:900}
+.seat{width:68px;height:64px;font-size:9px;line-height:1.08;padding:7px 4px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;-webkit-tap-highlight-color:transparent}
+.seat:active{transform:scale(.97)}
+.single{background:linear-gradient(145deg,#fff0a0,#f1bc35)}
+.double{background:linear-gradient(145deg,#cae6b3,#8fbd70)}
+.ladies{background:linear-gradient(145deg,#ffc8df,#eb89b8)}
+.step{background:linear-gradient(145deg,#ffe789,#f2bc39);height:50px}
+.baby{width:34px;height:58px;background:linear-gradient(145deg,#555,#111);color:#fff;font-size:17px;border-radius:10px}
+.num{position:absolute;top:-9px;left:5px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid #fff;font-size:11px;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.blink{animation:blink .65s ease-in-out 7;z-index:99}
+@keyframes blink{
+  0%,100%{box-shadow:var(--seat-shadow)}
+  50%{transform:scale(1.12);box-shadow:0 0 0 6px rgba(239,28,37,.85),0 0 28px rgba(239,28,37,.55),var(--seat-shadow)}
+}
+.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:10px;font-weight:800;color:var(--muted)}
+.key{display:flex;align-items:center;gap:5px}.sw{width:15px;height:15px;border-radius:4px;border:1px solid rgba(0,0,0,.15);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* Pickup list */
+.list{margin:0 16px 14px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--card-shadow)}
+.search{
+  position:sticky;top:0;z-index:20;
+  padding:10px 12px;background:linear-gradient(180deg,#f8fbff,#f2f6fb);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 4px 12px rgba(6,26,74,.06);
+}
+.search input{
+  width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
+  font-size:15px;background:#fff;outline:none;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.04);
+  transition:border-color .2s,box-shadow .2s;
+}
+.search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(12,47,116,.12)}
+.person{
+  display:grid;grid-template-columns:34px 1fr auto;gap:8px;
+  padding:9px 12px;border-bottom:1px solid #e8edf4;
+  align-items:center;background:#fff;
+  transition:background .15s;
+}
+.person:last-child{border-bottom:0}
+.person:active{background:#f6f9fd}
+.seatNo{
+  width:30px;height:30px;border-radius:50%;background:linear-gradient(145deg,var(--navy),var(--blue));
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;
+  box-shadow:0 2px 6px rgba(6,26,74,.25);
+}
+.pname{font-size:13px;font-weight:800;color:var(--navy);cursor:pointer;line-height:1.25;-webkit-tap-highlight-color:transparent}
+.pmeta{font-size:10px;color:#475569;line-height:1.4;margin-top:2px}
+.actions{display:flex;flex-direction:column;gap:5px;min-width:54px}
+.actions a{
+  text-align:center;text-decoration:none;color:#fff;background:var(--navy);
+  border-radius:8px;padding:6px 8px;font-size:10px;font-weight:900;
+  box-shadow:0 2px 6px rgba(6,26,74,.2);transition:transform .15s,box-shadow .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.actions a:active{transform:scale(.96)}
+.actions a.wa{background:#128c7e;box-shadow:0 2px 6px rgba(18,140,126,.25)}
+
+/* Important Notice */
+.notice{margin:0 16px 14px;border:1px solid #f0c878;border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--card-shadow)}
+.notice .title{background:linear-gradient(135deg,#b8860b,#d4a017)}
+.noticeBody{padding:14px 16px;font-size:13px;line-height:1.55;font-weight:700;color:#1e293b}
+.noticeBody li{margin-bottom:6px}
+.noticeBody li:last-child{margin-bottom:0}
+
+/* Footer */
+.bottom{
+  background:linear-gradient(135deg,#061a4a,#0b327a);color:#fff;
+  margin:0 16px 20px;border-radius:16px;padding:16px;
+  text-align:center;font-weight:900;font-size:14px;
+  box-shadow:0 8px 24px rgba(6,26,74,.2);
+  letter-spacing:.3px;
+}
+.bottom b{color:#ef1c25}.bottom i{font-style:normal;color:#18a84b}
+
+/* Desktop */
+@media(min-width:900px){
+  .wrap{max-width:1180px;margin:24px auto;border-radius:20px;box-shadow:0 20px 60px rgba(6,26,74,.12)}
+  .layout{display:grid;grid-template-columns:410px 1fr;gap:20px;padding:0 16px 16px}
+  .busCard{margin:0}
+  .busScaler{transform:none!important}
+  .busViewport{height:auto!important}
+  .rightCol{display:flex;flex-direction:column}
+  .list{margin:0 0 14px}
+  .route{margin:0 16px 14px}
+  .meta{grid-template-columns:repeat(3,1fr)}
+  .notice{margin:0 0 14px}
+}
+@media print{body{background:#fff}.wrap{max-width:none;margin:0;box-shadow:none}.actions,.search{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="logoRow">
+      <div class="logo"><div class="sq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div>SQUARE<small>GROUP</small></div></div>
+      <div class="tba">DRIVER: TBA<br>BUS NO: TBA</div>
+    </div>
+    <h1>ROUTE : 07</h1>
+    <h2>NISSAN CIVILIAN • SEAT PLAN</h2>
+  </div>
+
+  <div class="meta">
+    <div class="box"><b>Team Lead</b>Md. Maruful Hasan<br>Deputy Manager</div>
+    <div class="box"><b>Start Point</b>11.5 No. Bus Stand<br>Pillar-186</div>
+    <div class="box"><b>Start Time</b><span style="font-size:20px;color:var(--navy)">7:38 AM</span></div>
+  </div>
+
+  <div class="route">
+    <div class="title">ROUTE FLOW</div>
+    <div class="routeGrid">
+      <div class="stop">📍 11.5 No.<br>Bus Stand<span>7:38</span></div>
+      <div class="stop">📍 12 No.<br>Bus Stand<span>7:42</span></div>
+      <div class="stop">📍 Pallabi<br>Thana<span>7:50</span></div>
+      <div class="stop">📍 Kalshi<br>More<span>7:52</span></div>
+      <div class="stop">📍 Matikata<br>Bridge<span>7:54</span></div>
+      <div class="stop">📍 ECB<br>Chattar<span>7:56</span></div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="busCard">
+      <div class="busTitle">Tap any seat or name to highlight</div>
+      <div class="busViewport" id="busViewport">
+        <div class="busScaler" id="busScaler">
+          <div class="bus">
+            <div class="windowL"></div><div class="windowR"></div>
+            <div class="dash"></div><div class="wheel"></div><div class="driver">DRIVER</div>
+            <div class="aisle"></div><div class="door">ENTRANCE<br>DOOR</div><div class="handle h1"></div><div class="handle h2"></div>
+
+            <div id="seat-1" class="seat single" style="left:36px;top:78px"><span class="num">1</span>S M A<br>Kader Khan<br>AM</div>
+            <div class="baby" style="left:110px;top:81px">B</div>
+
+            <div id="seat-2" class="seat single" style="left:36px;top:154px"><span class="num">2</span>Md. Maruful<br>Hasan<br>DM</div>
+            <div class="baby" style="left:110px;top:157px">B</div>
+
+            <div id="seat-3" class="seat single" style="left:258px;top:160px"><span class="num">3</span>Mohammad<br>Asif Hossain<br>Manager</div>
+            <div class="baby" style="left:216px;top:163px">B</div>
+
+            <div id="seat-4" class="seat single" style="left:36px;top:350px"><span class="num">4</span>Md. Touhidur<br>Rahman<br>DM</div>
+            <div id="seat-7" class="seat single" style="left:36px;top:430px"><span class="num">7</span>Yeasir<br>Ahmed<br>Sr.Ex-I</div>
+            <div id="seat-12" class="seat single" style="left:36px;top:510px"><span class="num">12</span>Faisal<br>Ahmed<br>Sr.Ex-I</div>
+            <div id="seat-18" class="seat single" style="left:36px;top:590px"><span class="num">18</span>KH. Rifat<br>Hossain<br>Ex-III</div>
+
+            <div class="baby" style="left:180px;top:288px">B</div>
+            <div id="seat-5" class="seat double" style="left:220px;top:284px"><span class="num">5</span>Md. Nayeem<br>Ul Islam<br>Ex-I</div>
+            <div id="seat-6" class="seat double" style="left:288px;top:284px"><span class="num">6</span>Md. Shahariar<br>Alam<br>AM</div>
+
+            <div class="baby" style="left:180px;top:368px">B</div>
+            <div id="seat-8" class="seat ladies" style="left:220px;top:364px"><span class="num">8</span>Farida<br>Yeasmeen<br>Ex-II</div>
+            <div id="seat-9" class="seat ladies" style="left:288px;top:364px"><span class="num">9</span>Taheera<br>Khatun<br>Ex-I</div>
+
+            <div class="baby" style="left:180px;top:448px">B</div>
+            <div id="seat-10" class="seat double" style="left:220px;top:444px"><span class="num">10</span>Kazi Rafsan<br>Zaman<br>Ex-I</div>
+            <div id="seat-11" class="seat double" style="left:288px;top:444px"><span class="num">11</span>Md. Muktar<br>Ali<br>Ex-I</div>
+
+            <div class="baby" style="left:180px;top:528px">B</div>
+            <div id="seat-13" class="seat double" style="left:220px;top:524px"><span class="num">13</span>Saiful Hasan<br>Sakib<br>Ex-II</div>
+            <div id="seat-14" class="seat double" style="left:288px;top:524px"><span class="num">14</span>Ahnaf<br>Tazwar<br>Ex-II</div>
+
+            <div class="baby" style="left:180px;top:608px">B</div>
+            <div id="seat-15" class="seat double" style="left:220px;top:604px"><span class="num">15</span>Twhid<br>Mahmud<br>Ex-II</div>
+            <div id="seat-16" class="seat double" style="left:288px;top:604px"><span class="num">16</span>Joy Bala<br>Ex-II</div>
+
+            <div id="seat-17" class="seat step" style="left:34px;top:658px"><span class="num">17</span>Saikat<br>Shuvo<br>Ex-II</div>
+            <div id="seat-19" class="seat step" style="left:112px;top:658px"><span class="num">19</span>M. Arman<br>Kaiser<br>Officer</div>
+            <div id="seat-20" class="seat step" style="left:206px;top:658px"><span class="num">20</span>Available</div>
+            <div id="seat-21" class="seat step" style="left:284px;top:658px"><span class="num">21</span>Available</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="key"><span class="sw" style="background:var(--yellow)"></span>Single</div>
+        <div class="key"><span class="sw" style="background:var(--green)"></span>Double</div>
+        <div class="key"><span class="sw" style="background:var(--pink)"></span>Ladies</div>
+        <div class="key"><span class="sw" style="background:var(--black)"></span>Baby</div>
+      </div>
+    </div>
+
+    <div class="rightCol">
+      <div class="list">
+        <div class="title">PICKUP LIST — TAP NAME TO BLINK SEAT</div>
+        <div class="search"><input id="q" placeholder="Search name / pickup point / seat no..."></div>
+        <div id="peopleList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <div class="title">IMPORTANT NOTICE</div>
+    <div class="noticeBody">
+      <ul style="margin:0;padding-left:18px">
+        <li>Please strictly follow the seat plan and time schedule.</li>
+        <li>No requests for waiting in the morning will be entertained.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom">SAFETY • DISCIPLINE • PUNCTUALITY<br><b>SQUARE</b> <i>GROUP</i></div>
+</div>
+
+<script>
+const people = [
+  {sl:1,name:"S M A Kader Khan",des:"Assistant Manager",point:"11.5 No. Bus Stand (Pillar-186)",time:"7:38",seat:1,phone:"01730783633"},
+  {sl:2,name:"Md. Maruful Hasan",des:"Deputy Manager",point:"12 No. Bus Stand (Pillar-172)",time:"7:42",seat:2,phone:"01313050771"},
+  {sl:3,name:"Mohammad Asif Hossain",des:"Manager",point:"Kalshi More (Jatri Chauni)",time:"7:52",seat:3,phone:"01756569567"},
+  {sl:4,name:"Md. Touhidur Rahman",des:"Deputy Manager",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:4,phone:"01708490013"},
+  {sl:5,name:"Md. Nayeem Ul Islam",des:"Executive-I",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:5,phone:"01944125900"},
+  {sl:6,name:"Md. Shahariar Alam",des:"Assistant Manager",point:"Kalshi More (Jatri Chauni)",time:"7:52",seat:6,phone:"01729271297"},
+  {sl:7,name:"Yeasir Ahmed",des:"Sr. Executive-I",point:"11.5 No. Bus Stand (Pillar-186)",time:"7:38",seat:7,phone:"01711408478"},
+  {sl:8,name:"Farida Yeasmeen",des:"Executive-II",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:8,phone:"01332927524"},
+  {sl:9,name:"Taheera Khatun Jushan",des:"Executive-I",point:"Matikata Steel Bridge",time:"7:54",seat:9,phone:"01708157586"},
+  {sl:10,name:"Kazi Rafsan Zaman Richen",des:"Executive-I",point:"Kalshi More (Jatri Chauni)",time:"7:52",seat:10,phone:"01313050794"},
+  {sl:11,name:"Md. Muktar Ali",des:"Executive-I",point:"12 No. Bus Stand (Pillar-172)",time:"7:42",seat:11,phone:"01730787380"},
+  {sl:12,name:"Faisal Ahmed",des:"Sr. Executive-I",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:12,phone:"01730326244"},
+  {sl:13,name:"Saiful Hasan Sakib",des:"Executive-II",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:13,phone:"01672236641"},
+  {sl:14,name:"Ahnaf Tazwar",des:"Executive-II",point:"11.5 No. Bus Stand (Pillar-186)",time:"7:38",seat:14,phone:"01332927531"},
+  {sl:15,name:"Twhid Mahmud Azan",des:"Executive-II",point:"ECB Chattar (Jatri Chauni)",time:"7:56",seat:15,phone:"01332927525"},
+  {sl:16,name:"Joy Bala",des:"Executive-II",point:"Khilkhet",time:"TBA",seat:16,phone:""},
+  {sl:17,name:"Saikat Das Shuvo",des:"Executive-II",point:"Khilkhet",time:"TBA",seat:17,phone:""},
+  {sl:18,name:"KH. Rifat Hossain",des:"Executive-III",point:"Pallabi Thana",time:"7:50",seat:18,phone:"01322906171"},
+  {sl:19,name:"M. Arman Kaiser",des:"Officer",point:"Kalshi More (Jatri Chauni)",time:"7:52",seat:19,phone:"01329671478"}
+];
+
+function blinkSeat(no){
+  const el=document.getElementById("seat-"+no);
+  if(!el)return;
+  el.classList.remove("blink");
+  void el.offsetWidth;
+  el.classList.add("blink");
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+}
+function contact(phone){
+  if(!phone)return `<span style="font-size:10px;color:#64748b;font-weight:800">TBA</span>`;
+  return `<a href="tel:${phone}">Call</a><a class="wa" target="_blank" href="https://wa.me/88${phone}">WA</a>`;
+}
+function render(rows){
+  document.getElementById("peopleList").innerHTML=rows.map(p=>`
+  <div class="person">
+    <div class="seatNo">${p.seat}</div>
+    <div>
+      <div class="pname" onclick="blinkSeat(${p.seat})">${p.name}</div>
+      <div class="pmeta">${p.des}<br>${p.point} • ${p.time}</div>
+    </div>
+    <div class="actions">${contact(p.phone)}</div>
+  </div>`).join("");
+}
+render(people);
+document.getElementById("q").addEventListener("input",e=>{
+  const v=e.target.value.toLowerCase().trim();
+  render(people.filter(p=>(p.name+" "+p.des+" "+p.point+" "+p.seat).toLowerCase().includes(v)));
+});
+document.querySelectorAll(".seat").forEach(el=>el.addEventListener("click",()=>blinkSeat(el.id.replace("seat-",""))));
+
+function scaleBus(){
+  if(window.innerWidth>=900)return;
+  const vp=document.getElementById("busViewport");
+  const sc=document.getElementById("busScaler");
+  const pad=52;
+  const busW=360,busH=720;
+  const avail=Math.min(vp.parentElement.clientWidth,window.innerWidth)-pad;
+  const s=Math.min(1,avail/busW);
+  sc.style.transform="scale("+s+")";
+  vp.style.height=(busH*s)+"px";
+}
+scaleBus();
+window.addEventListener("resize",scaleBus);
+</script>
+</body>
+</html>
